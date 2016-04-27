@@ -1,22 +1,33 @@
 #include <stdio.h>
 #include <string.h>
+#include "funcoes.h"
 
 int menu_principal() //menu principal
 {
     system("cls");
     int opcao;
 
-    printf("\tMENU PRINCIPAL\n");
-    printf("\n1  Cadastrar Medico.\n");
-    printf("2  Cadastrar Paciente.\n");
-    printf("3  Cadastrar Consulta.\n");
-    printf("4  Buscar consulta.\n");
-    printf("5  Listar Medicos.\n");
-    printf("6  Listar Pacientes.\n");
-    printf("7  sair.\n\n--> ");
+    do
+    {
+        printf("\tMENU PRINCIPAL\n");
+        printf("\n1  Cadastrar Medico.\n");
+        printf("2  Cadastrar Paciente.\n");
+        printf("3  Cadastrar Consulta.\n");
+        printf("4  Buscar consulta.\n");
+        printf("5  Listar Medicos.\n");
+        printf("6  Listar Pacientes.\n");
+        printf("7  sair.\n\n--> ");
 
     scanf("%d", &opcao);
+    if(opcao < 1 || opcao > 7)
+    {
+        printf("Digite uma opcao valida!...\n");
+        system("pause");
+
+    }
+    system("cls");
     fflush(stdin);
+    }while(opcao < 1 || opcao > 7);
 
     return opcao;
 }
@@ -35,32 +46,32 @@ int menu_listar_consultas_dia() //menu principal
     return dia;
 }
 
-typedef struct dia{
+struct dia{
     int Consulta[4];
     int quant_consultas;
-} Dia;
+};
 
 
-typedef struct medico{
+struct medico{
     int cod_med;
-    char tel[10];
+    long long int tel;
     char nome[50];
     char end[70];
-} Medico;
+};
 
-typedef struct paciente{
+struct paciente{
     int cod_pac;
     char tel[10];
     char nome[50];
     char end[70];
-} Paciente;
+};
 
 typedef struct consulta{
     int cod_con;
     int dia_con;
     int cod_med, cod_pac;
     int hora_con;
-} Consulta;
+};
 
 //---------------------------------------------------------------------------------
 int auto_cod_med()
@@ -74,9 +85,23 @@ int auto_cod_med()
 
     arquivo = fopen(nome_arquivo, "r");
 
-    while((fscanf(arquivo,"%d\t%s\t%s\t%s\n", &aux.cod_med, aux.nome, aux.tel, aux.end)) != EOF)
+    while(arquivo != NULL && !feof(arquivo))
     {
+
+            fscanf(arquivo," %d", &aux.cod_med);
+            fgetc(arquivo);
+            fgets(aux.nome, 50, arquivo);
+            fscanf(arquivo,"%lld", &aux.tel);
+            fgetc(arquivo);
+            fgets(aux.end, 70, arquivo);
+            printf("%d\n%s%lld\n%s\n-----\n", aux.cod_med, aux.nome, aux.tel, aux.end);
+
         cont++;
+        if(cont > 50)
+        {
+            printf("ERRO_FATAL\n[modulo auto_cod_med]\n");
+            exit(-1);
+        }
     }
     if (cont > 0)
         return aux.cod_med+1;
@@ -93,14 +118,15 @@ Medico* dados_medico()
 
     medico->cod_med = auto_cod_med();
     fflush(stdin);
-    printf("Nome:\n");
+    printf("Nome: ");
     fgets(medico->nome, 50, stdin);
-    printf("Telefone:\n");
-    fgets(medico->tel, 10, stdin);
-    printf("Endereço:\n");
+    printf("Telefone: ");
+    scanf("%lld", &medico->tel);
+    fflush(stdin);
+    printf("Endereco: ");
     fgets(medico->end, 70, stdin);
 
-    printf("\n\nDADOS SALVOS: \nCOD_MED:   %d\nNome:   %s\nTelefone:  %s\nEndereco:   %s\n\n", medico->cod_med,
+    printf("\n\nDADOS SALVOS: \nCOD_MED:   %d\nNome:   %sTelefone:  %lld\nEndereco:   %s\n\n", medico->cod_med,
            medico->nome, medico->tel, medico->end);
 
     return medico;
@@ -113,10 +139,8 @@ void salvar_medico(Medico *medico){
     arquivo = fopen(nome_arquivo, "a+");
 
     medico->nome[strlen(medico->nome)-1] = '\0';
-    medico->tel[strlen(medico->tel)-1] = '\0';
     medico->end[strlen(medico->end)-1] = '\0';
-
-    fprintf(arquivo, "%d\t%s\t%s\t%s\n", medico->cod_med, medico->nome, medico->tel, medico->end);
+    fprintf(arquivo, "%d\n%s\n%lld\n%s\n\n", medico->cod_med, medico->nome, medico->tel, medico->end);
 
     free(medico);
     fclose(arquivo);
