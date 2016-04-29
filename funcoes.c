@@ -1,3 +1,5 @@
+/* funcoes.c*/
+
 #include <stdio.h>
 #include <string.h>
 #include "funcoes.h"
@@ -46,7 +48,7 @@ int menu_listar_consultas_dia() //menu principal
     return dia;
 }
 
-struct dia{
+struct dia{ //verificar se esta sendo usada
     int Consulta[4];
     int quant_consultas;
 };
