@@ -61,7 +61,7 @@ struct medico{
 
 struct paciente{
     int cod_pac;
-    char tel[10];
+    long long int tel;
     char nome[50];
     char end[70];
 };
@@ -94,7 +94,7 @@ int auto_cod_med()
             fscanf(arquivo,"%lld", &aux.tel);
             fgetc(arquivo);
             fgets(aux.end, 70, arquivo);
-            printf("%d\n%s%lld\n%s\n-----\n", aux.cod_med, aux.nome, aux.tel, aux.end);
+            //printf("%d\n%s%lld\n%s\n-----\n", aux.cod_med, aux.nome, aux.tel, aux.end);
 
         cont++;
         if(cont > 50)
@@ -155,13 +155,24 @@ void listar_medicos()
 
     arquivo = fopen(nome_arquivo, "r");
 
-    while((fscanf(arquivo,"%d\t%s\t%s\t%s\n", &aux.cod_med, aux.nome, aux.tel, aux.end)) != EOF)
+    while(arquivo != NULL && !feof(arquivo))
     {
-        printf("\n\tCOD_MED: %d", aux.cod_med);
-        printf("\nNome: %s", aux.nome);
-        printf("\nTelefone: %s", aux.tel);
-        printf("\nEndereco: %s", aux.end);
-        printf("\n\n");
+
+        fscanf(arquivo," %d", &aux.cod_med);
+        fgetc(arquivo);
+        fgets(aux.nome, 50, arquivo);
+        fscanf(arquivo,"%lld", &aux.tel);
+        fgetc(arquivo);
+        fgets(aux.end, 70, arquivo);
+
+        if(!feof(arquivo))
+        {
+            printf("\nCOD_MED: %d", aux.cod_med);
+            printf("\nNome: %s", aux.nome);
+            printf("Telefone: %lld", aux.tel);
+            printf("\nEndereco: %s", aux.end);
+            printf("\n");
+        }
     }
 
     fclose(arquivo);
@@ -181,8 +192,15 @@ int auto_cod_pac()
 
     arquivo = fopen(nome_arquivo, "r");
 
-    while((fscanf(arquivo,"%d\t%s\t%s\t%s\n", &aux.cod_pac, aux.nome, aux.tel, aux.end)) != EOF)
+    while(arquivo != NULL && !feof(arquivo))
     {
+        fscanf(arquivo, " %d", &aux.cod_pac);
+        fgetc(arquivo);
+        fgets(aux.nome, 50, arquivo);
+        fscanf(arquivo, "%lld", &aux.tel);
+        fgetc(arquivo);
+        fgets(aux.end, 70, arquivo);
+
         cont++;
     }
     if (cont > 0)
@@ -199,14 +217,15 @@ Paciente* dados_paciente()
 
     paciente->cod_pac = auto_cod_pac();
     fflush(stdin);
-    printf("Nome:\n");
+    printf("Nome: ");
     fgets(paciente->nome, 50, stdin);
-    printf("Telefone:\n");
-    fgets(paciente->tel, 10, stdin);
-    printf("Endereço:\n");
+    printf("Telefone: ");
+    scanf("%lld", &paciente->tel);
+    fflush(stdin);
+    printf("Endereco: ");
     fgets(paciente->end, 70, stdin);
 
-    printf("\n\nDADOS SALVOS: \nCOD_PAC:   %d\nNome:   %s\nTelefone:  %s\nEndereco:   %s\n\n", paciente->cod_pac,
+    printf("\n\nDADOS SALVOS: \nCOD_PAC:   %d\nNome:   %sTelefone:  %lld\nEndereco:   %s\n", paciente->cod_pac,
            paciente->nome, paciente->tel, paciente->end);
 
     return paciente;
@@ -219,10 +238,9 @@ void salvar_paciente(Paciente *paciente){
     arquivo = fopen(nome_arquivo, "a+");
 
     paciente->nome[strlen(paciente->nome)-1] = '\0';
-    paciente->tel[strlen(paciente->tel)-1] = '\0';
     paciente->end[strlen(paciente->end)-1] = '\0';
 
-    fprintf(arquivo, "%d\t%s\t%s\t%s\n", paciente->cod_pac, paciente->nome, paciente->tel, paciente->end);
+    fprintf(arquivo, "%d\n%s\n%lld\n%s\n\n", paciente->cod_pac, paciente->nome, paciente->tel, paciente->end);
 
     free(paciente);
     fclose(arquivo);
@@ -237,13 +255,23 @@ void listar_pacientes()
 
     arquivo = fopen(nome_arquivo, "r");
 
-    while((fscanf(arquivo,"%d\t%s\t%s\t%s\n", &aux.cod_pac, aux.nome, aux.tel, aux.end)) != EOF)
+    while(arquivo != NULL && !feof(arquivo))
     {
-        printf("\n\tCOD_MED: %d", aux.cod_pac);
-        printf("\nNome: %s", aux.nome);
-        printf("\nTelefone: %s", aux.tel);
-        printf("\nEndereco: %s", aux.end);
-        printf("\n\n");
+        fscanf(arquivo, " %d", &aux.cod_pac);
+        fgetc(arquivo);
+        fgets(aux.nome, 50, arquivo);
+        fscanf(arquivo, "%lld", &aux.tel);
+        fgetc(arquivo);
+        fgets(aux.end, 70, arquivo);
+
+        if(!feof(arquivo))
+        {
+            printf("\nCOD_PAC: %d", aux.cod_pac);
+            printf("\nNome: %s", aux.nome);
+            printf("Telefone: %lld", aux.tel);
+            printf("\nEndereco: %s", aux.end);
+            printf("\n");
+        }
     }
 
     fclose(arquivo);

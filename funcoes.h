@@ -12,7 +12,8 @@ typedef struct consulta Consulta;
  *
  *
  * @param void
- * @return retorna um inteiro com a opcao desejada
+ *
+ * @return
  */
 
 int menu_principal();
