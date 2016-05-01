@@ -7,6 +7,7 @@
 int menu_principal() //menu principal
 {
     system("cls");
+
     int opcao;
 
     do
@@ -29,8 +30,8 @@ int menu_principal() //menu principal
     }
     system("cls");
     fflush(stdin);
-    }while(opcao < 1 || opcao > 7);
 
+    }while(opcao < 1 || opcao > 7);
     return opcao;
 }
 
@@ -40,18 +41,26 @@ int menu_listar_consultas_dia() //menu principal
     int dia;
 
     printf("\tMENU LISTAR CONSULTA\n");
-    printf("\nDigite o dia da semana:\n\n--> ");
-
+    printf("\nDigite o dia da semana(int): ");
     scanf("%d", &dia);
+    if(dia < 2 || dia > 6)
+    {
+        system("cls");
+        printf("\nSo atendemos de segunda a sexta!\n");
+        printf("\nDigite o dia da semana(int): ");
+        scanf("%d", &dia);
+    }
     fflush(stdin);
 
     return dia;
 }
 
-struct dia{ //verificar se esta sendo usada
+/*
+    //Essa funcao não foi necessária
+struct dia{
     int Consulta[4];
     int quant_consultas;
-};
+};*/
 
 
 struct medico{
@@ -96,7 +105,6 @@ int auto_cod_med()
             fscanf(arquivo,"%lld", &aux.tel);
             fgetc(arquivo);
             fgets(aux.end, 70, arquivo);
-            //printf("%d\n%s%lld\n%s\n-----\n", aux.cod_med, aux.nome, aux.tel, aux.end);
 
         cont++;
         if(cont > 50)
@@ -311,18 +319,34 @@ Consulta* dados_consulta()
     Consulta *consulta = (Consulta*)malloc(sizeof(Consulta));
 
     consulta->cod_con = auto_cod_con();
-    printf("Código do médico:\n");
+    printf("Codigo do medico: ");
     scanf("%d", &consulta->cod_med);
-    printf("Código do paciente:\n");
+    printf("Codigo do paciente: ");
     scanf("%d", &consulta->cod_pac);
-    printf("Dia da consulta:\n");
+    printf("\nDia da consulta\n2_Segunda\n3_Terca\n4_Quarta\n5_Quinta\n6_Sexta\n\n------> ");
     scanf("%d", &consulta->dia_con);
-    printf("Hora da consulta:\n");
+    while(consulta->dia_con < 2 || consulta->dia_con > 6)
+    {
+        system("cls");
+        printf("\nSo atendemos de segunda a sexta!\n");
+        printf("\nDia da consulta\n2_Segunda\n3_Terca\n4_Quarta\n5_Quinta\n6_Sexta\n\n------> ");
+        scanf("%d", &consulta->dia_con);
+    }
+    printf("Hora da consulta(hhmm): ");
     scanf("%d", &consulta->hora_con);
 
-    printf("\n\nDADOS SALVOS: \nCOD_CON:   %d\nCOD_MED:   %d\nCOD_PAC:  %d\nDIA_CON:   %d\nHORA:   %d\n", consulta->cod_con,
-           consulta->cod_med, consulta->cod_pac, consulta->dia_con, consulta->hora_con);
-
+    int hora = consulta->hora_con/100;
+    int min = consulta->hora_con%100;
+    if(min >= 10)
+    {
+    printf("\n\nDADOS SALVOS: \nCOD_CON:   %d\nCOD_MED:   %d\nCOD_PAC:  %d\nDIA_CON:   %d\nHORA:   %d:%d\n", consulta->cod_con,
+           consulta->cod_med, consulta->cod_pac, consulta->dia_con, hora,min);
+    }
+    else
+    {
+    printf("\n\nDADOS SALVOS: \nCOD_CON:   %d\nCOD_MED:   %d\nCOD_PAC:  %d\nDIA_CON:   %d\nHORA:   %d:0%d\n", consulta->cod_con,
+           consulta->cod_med, consulta->cod_pac, consulta->dia_con, hora,min);
+    }
     return consulta;
 }
 
@@ -352,13 +376,21 @@ void listar_consultas(Consulta consulta)
     arquivo = fopen("medicos.txt", "r");
 
     //-----------------CONSULTA
-    printf("\n\t\tCOD_CONSULTA: %d", consulta.cod_con);
+    printf("\nCOD_CONSULTA: %d", consulta.cod_con);
     printf("\nCOD_MEDICO: %d", consulta.cod_med);
 
     //-----------------MÉDICO
 
-    while((fscanf(arquivo,"%d\t%s\t%s\t%s\n", &aux_med.cod_med, aux_med.nome, aux_med.tel, aux_med.end)) != EOF)
+    while(arquivo != NULL && !feof(arquivo))
     {
+        fscanf(arquivo, " %d", &aux_med.cod_med);
+        fgetc(arquivo);
+        fgets(aux_med.nome, 50, arquivo);
+        fscanf(arquivo, "%lld", &aux_med.tel);
+        fgetc(arquivo);
+        fgets(aux_med.end, 70, arquivo);
+
+        /*verificando se existe esse codigo de medico no sistema*/
         if(consulta.cod_med == aux_med.cod_med)
         {
             teste = 1;
@@ -368,11 +400,11 @@ void listar_consultas(Consulta consulta)
 
     if(teste == 1)
     {
-        printf("\nNome Medico : %s", aux_med.nome);
+        printf("\nMEDICO: %s", aux_med.nome);
     }
     else
     {
-        printf("\nNome Medico : Nao encontrado");
+        printf("\nMedico Nao encontrado");
     }
 
     teste = 0;
@@ -384,8 +416,15 @@ void listar_consultas(Consulta consulta)
 
     arquivo = fopen("pacientes.txt", "r");
 
-    while((fscanf(arquivo,"%d\t%s\t%s\t%s\n", &aux_pac.cod_pac, aux_pac.nome, aux_pac.tel, aux_pac.end)) != EOF)
+    while(arquivo != NULL && !feof(arquivo))
     {
+        fscanf(arquivo, " %d", &aux_pac.cod_pac);
+        fgetc(arquivo);
+        fgets(aux_pac.nome, 50, arquivo);
+        fscanf(arquivo, "%lld", &aux_pac.tel);
+        fgetc(arquivo);
+        fgets(aux_pac.end, 70, arquivo);
+
         if(consulta.cod_pac == aux_pac.cod_pac)
         {
             teste = 1;
@@ -395,18 +434,49 @@ void listar_consultas(Consulta consulta)
 
     if(teste == 1)
     {
-        printf("\nNome Paciente : %s", aux_pac.nome);
+        printf("\nPACIENTE: %s", aux_pac.nome);
     }
     else
     {
-        printf("\nNome Paciente : Nao encontrado");
+        printf("\nPaciente Nao encontrado\n");
     }
 
     teste = 0;
     fclose(arquivo);
 
-    printf("\nDIA_CONSULTA: %d", consulta.dia_con);
-    printf("\nHORA_CONSULTA: %d\n\n", consulta.hora_con);
+    switch(consulta.dia_con)
+    {
+    case 2:
+        printf("DIA_CONSULTA: Segunda-feira");
+        break;
+    case 3:
+        printf("DIA_CONSULTA: Terca-feira");
+        break;
+    case 4:
+        printf("DIA_CONSULTA: Quarta-feira");
+        break;
+    case 5:
+        printf("DIA_CONSULTA: Quinta-feira");
+        break;
+    case 6:
+        printf("DIA_CONSULTA: Sexta-feira");
+        break;
+    default:
+        printf("So atendemos de Segunda a sexta!\n!");
+    }
+
+
+
+
+    int hora = consulta.hora_con/100;
+    int min = consulta.hora_con%100;
+
+    if(min >= 10)
+        printf("\nHORA_CONSULTA: %d:%d\n\n", hora, min);
+    else
+        printf("\nHORA_CONSULTA: %d:0%d\n\n", hora, min);
+
+printf("\n--------------------------------\n");
 }
 
 void consultas_marcadas(int dia)
@@ -419,9 +489,11 @@ void consultas_marcadas(int dia)
 
     arquivo = fopen(nome_arquivo, "r");
 
-    while((fscanf(arquivo,"%d\t%d\t%d\t%d\t%d\n", &aux_con.cod_con,
-           &aux_con.cod_med, &aux_con.cod_pac, &aux_con.dia_con, &aux_con.hora_con)) != EOF)
+    while(arquivo != NULL && !feof(arquivo))
     {
+       fscanf(arquivo,"%d\t%d\t%d\t%d\t%d\n", &aux_con.cod_con,
+           &aux_con.cod_med, &aux_con.cod_pac, &aux_con.dia_con, &aux_con.hora_con);
+
         if(aux_con.dia_con == dia)
             listar_consultas(aux_con);
     }
