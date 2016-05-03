@@ -1,18 +1,18 @@
-/**@project   AutomaÁ„o de uma clÌnica mÈdica
+/**@project   Automa√ß√£o de uma cl√≠nica m√©dica
  *
  * @abstract  trabalho produzido por
  * 							Marcos Antonio Santos de Souza
- *							Jean
- * 							Sergio
+ *							Jean Carlos Alves dos Santos
+ * 							Sergio Augusto Teixeira Amorim
  *
- * 							Instituto de ComputaÁ„o - UFAL
- *							COMP202A - LaboratÛrio de programaÁ„o
+ * 							Instituto de Computa√ß√£o - UFAL
+ *							COMP202A - Laborat√≥rio de programa√ß√£o
  *
  * @documented by Marcos Souza
  * @date   april 29, 2016
 */
 
-/* N„o foi necessaria
+/* N√£o foi necessaria
 typedef struct dia Dia;*/
 
 
@@ -24,7 +24,7 @@ typedef struct dia Dia;*/
  * @field int cod_med - inteiro que armazena o codigo do medico, gerado automaticamente
  * @field long long int tel - inteiro longo que armazena o nomero de telefone do medico
  * @field char nome[] - string que armazena o nome do medico
- * @field char end[] - string que armazena o endereÁo do medico
+ * @field char end[] - string que armazena o endere√ßo do medico
 */
 typedef struct medico Medico;
 
@@ -37,7 +37,7 @@ typedef struct medico Medico;
  * @field int cod_pac - inteiro que armazena o codigo do paciente, gerado automaticamente
  * @field long long int tel - inteiro longo que armazena o nomero de telefone do paciente
  * @field char nome[] - string que armazena o nome do paciente
- * @field char end[] - string que armazena o endereÁo do paciente
+ * @field char end[] - string que armazena o endere√ßo do paciente
 */
 typedef struct paciente Paciente;
 
@@ -58,7 +58,7 @@ typedef struct consulta Consulta;
 
 /** @function menu_principal() - Imprime o menu principal.
  *
- * @abstract        Escreve na tela a solicitaÁ„o de qual funÁ„o deve ser chamada
+ * @abstract        Escreve na tela a solicita√ß√£o de qual fun√ß√£o deve ser chamada
  *                  pelo usuario.
  *
  * @param void - sem parametros.
@@ -71,7 +71,7 @@ int menu_principal();
 
 /** @function menu_listar_consultas_dia() - Imprime o menu para listar busca de consultas.
  *
- * @abstract        Escreve na tela a solicitaÁ„o de qual dia que as consultas devem ser buscadas
+ * @abstract        Escreve na tela a solicita√ß√£o de qual dia que as consultas devem ser buscadas
  *                  pelo usuario.
  *
  * @param void - sem parametros.
@@ -93,9 +93,9 @@ int menu_listar_consultas_dia();
 int auto_cod_med();
 
 
-/** @function dados_medico() - SolicitaÁ„o dos dados cadastrais do medico.
+/** @function dados_medico() - Solicita√ß√£o dos dados cadastrais do medico.
  *
- * @abstract        Solicita os dados necess·rios para cadastro de novo medico
+ * @abstract        Solicita os dados necess√°rios para cadastro de novo medico
  *                  No sistema.
  *
  * @param void - sem parametros.
@@ -141,9 +141,9 @@ void listar_medicos();
 int auto_cod_pac();
 
 
-/** @function dados_paciente() - SolicitaÁ„o dos dados cadastrais do paciente.
+/** @function dados_paciente() - Solicita√ß√£o dos dados cadastrais do paciente.
  *
- * @abstract        Solicita os dados necess·rios para cadastro de novo paciente
+ * @abstract        Solicita os dados necess√°rios para cadastro de novo paciente
  *                  No sistema.
  *
  * @param void - sem parametros.
@@ -189,9 +189,9 @@ void listar_pacientes();
 int auto_cod_con();
 
 
-/** @function dados_consulta() - SolicitaÁ„o dos dados da consulta realizada.
+/** @function dados_consulta() - Solicita√ß√£o dos dados da consulta realizada.
  *
- * @abstract        Solicita os dados necess·rios para cadastrar a consulta realizada
+ * @abstract        Solicita os dados necess√°rios para cadastrar a consulta realizada
  *                  No sistema.
  *
  * @param void - sem parametros.
@@ -215,12 +215,12 @@ void salvar_consulta(Consulta *consulta);
 
 /** @function listar_consultas() - Listagem dos dados da consulta solicitada.
  *
- * @abstract                    Imprime os dados consulta solicitada por outra funÁ„o
+ * @abstract                    Imprime os dados consulta solicitada por outra fun√ß√£o
  *                              No caso (consultas_marcadas()) que filtra quais devem ser
  *                              Os dados a serem imprimidos de acordo com o filtro definido
  *                              Que no caso foi o dia da consulta.
  *
- * @param Consulta consulta - Recebe um consulta que satisfaz o filtro pelo dia de realizaÁ„o.
+ * @param Consulta consulta - Recebe um consulta que satisfaz o filtro pelo dia de realiza√ß√£o.
  *
  * @return void - sem retorno.
  */
@@ -229,7 +229,7 @@ void listar_consultas(Consulta consulta);
 
 /** @function consultas_marcadas() - Filtro de busca de consultas.
  *
- * @abstract                    Define quais consultas devem ser imprimidas, respeitando a restriÁ„o
+ * @abstract                    Define quais consultas devem ser imprimidas, respeitando a restri√ß√£o
  *                              De que somente deve-se imprimir as consultas do dia recebido na entrada.
  *
  * @param int dia - Recebe o dia que define as buscas das consultas.
