@@ -1,4 +1,5 @@
 /* main.c */
+/* para windows */
 
 #include <stdio.h>
 #include <stdlib.h>
