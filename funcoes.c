@@ -56,7 +56,7 @@ int menu_listar_consultas_dia() //menu principal
 }
 
 /*
-    //Essa funcao n„o foi necess·ria
+    //Essa funcao n√£o foi necess√°ria
 struct dia{
     int Consulta[4];
     int quant_consultas;
@@ -84,7 +84,7 @@ typedef struct consulta{
     int hora_con;
 };
 
-//---------------------------------------------------------------------------------
+//------------------------------------- medicos --------------------------------------------
 int auto_cod_med()
 {
     int cont = 0;
@@ -189,7 +189,7 @@ void listar_medicos()
     system("pause");
 }
 
-//----------------------------------------------------
+//------------------------------ pacientes ------------------------
 
 int auto_cod_pac()
 {
@@ -288,7 +288,7 @@ void listar_pacientes()
     system("pause");
 }
 
-//---------------------------------------------------
+//-----------------------  consultas  ----------------------------
 int auto_cod_con()
 {
     int cont = 0;
@@ -379,7 +379,7 @@ void listar_consultas(Consulta consulta)
     printf("\nCOD_CONSULTA: %d", consulta.cod_con);
     printf("\nCOD_MEDICO: %d", consulta.cod_med);
 
-    //-----------------M…DICO
+    //-----------------M√âDICO
 
     while(arquivo != NULL && !feof(arquivo))
     {
